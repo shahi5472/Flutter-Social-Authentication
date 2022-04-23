@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "705150949994",
+    "project_id": "flutter-social-authentic-3effd",
+    "storage_bucket": "flutter-social-authentic-3effd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705150949994:android:ffd9779e51f7cf39cdc813",
+        "android_client_info": {
+          "package_name": "com.shahi.flutter_social_authentication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705150949994-tf9cp18988icr5iv3hvnslq82nq3juo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyzuj4zdMc1d5GcBwKtFLKHEeMNjoRong"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705150949994-tf9cp18988icr5iv3hvnslq82nq3juo4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
