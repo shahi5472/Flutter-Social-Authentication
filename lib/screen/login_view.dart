@@ -20,7 +20,13 @@ class LoginView extends GetView<LoginController> {
                 controller.googleSignIn(context);
               },
             ),
-            SignInButton(Buttons.Facebook, onPressed: () {}),
+            SignInButton(
+              Buttons.Facebook,
+              onPressed: () {
+                controller.showSnackBar(context, 'Facebook sign in click');
+                controller.facebookSignIn(context);
+              },
+            ),
             SignInButton(Buttons.Apple, onPressed: () {}),
           ],
         ),

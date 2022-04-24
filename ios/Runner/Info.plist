@@ -59,5 +59,39 @@
     		</array>
     	</dict>
     </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>fb2408898112583497</string>
+        </array>
+      </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>2408898112583497</string>
+    <key>FacebookClientToken</key>
+    <string>2c3e0a818862423bf9c880fc0481bfba</string>
+    <key>FacebookDisplayName</key>
+    <string>Flutter Social Authentication</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-share-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>fb2408898112583497</string>
+          <string>com.googleusercontent.apps.705150949994-gi5b41n6urs46rmih1k80gkeq1oeifea</string>
+        </array>
+      </dict>
+    </array>
 </dict>
 </plist>
