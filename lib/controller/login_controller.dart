@@ -4,6 +4,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_social_authentication/screen/home_view.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -11,6 +12,7 @@ class LoginController extends GetxController {
   RxString name = "".obs;
   RxString email = "".obs;
 
+  ///Google Sign in method start
   Future<void> googleSignIn(context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -35,6 +37,9 @@ class LoginController extends GetxController {
     }
   }
 
+  ///Google Sign in method end
+
+  /// Facebook sign in method start
   Future<void> facebookSignIn(context) async {
     try {
       final LoginResult loginResult = await FacebookAuth.i.login();
@@ -53,6 +58,35 @@ class LoginController extends GetxController {
       showSnackBar(context, 'Error $e');
     }
   }
+
+  /// Facebook sign in method end
+
+  ///Apple sign in method start
+  Future<void> appleSignIn(context) async {
+    try {
+      final appleIDCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
+
+      final credential = oAuthProvider.credential(
+        idToken: appleIDCredential.identityToken,
+        accessToken: appleIDCredential.authorizationCode,
+      );
+
+      await _handleSignInWithCredential(credential);
+      showSnackBar(context, 'Sign in successful');
+      Get.offAll(const HomeView());
+    } catch (e) {
+      print("Error $e");
+      showSnackBar(context, 'Error $e');
+    }
+  }
+  ///Apple sign in method end
 
   Future<void> _handleSignInWithCredential(credential) async {
     UserCredential userCredential =
