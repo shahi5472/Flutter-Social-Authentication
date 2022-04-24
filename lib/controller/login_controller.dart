@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_social_authentication/screen/home_view.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -26,8 +27,10 @@ class LoginController extends GetxController {
         );
         await _handleSignInWithCredential(credential);
         showSnackBar(context, 'Sign in successful');
+        Get.offAll(const HomeView());
       }
     } catch (e) {
+      print("Error $e");
       showSnackBar(context, 'Error $e');
     }
   }
