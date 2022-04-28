@@ -29,6 +29,14 @@ class HomeView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+            Text(
+              FirebaseAuth.instance.currentUser?.phoneNumber ?? 'Phone Empty',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut();

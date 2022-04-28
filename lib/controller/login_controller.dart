@@ -1,16 +1,99 @@
+import 'package:country_code_picker/country_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_social_authentication/screen/home_view.dart';
+import 'package:flutter_social_authentication/screen/otp_view.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginController extends GetxController {
+  BuildContext? context;
+
+  final formKey = GlobalKey<FormState>();
+  final otpFormKey = GlobalKey<FormState>();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  RxString name = "".obs;
-  RxString email = "".obs;
+  final phoneEditController = TextEditingController();
+
+  final otpEditController = TextEditingController();
+
+  final emailEditController = TextEditingController();
+  final passwordEditController = TextEditingController();
+
+  Rx<CountryCode> selectedCode = CountryCode().obs;
+
+  RxString verificationId = ''.obs;
+
+  RxString authType = "phone".obs;
+
+  void phoneEmailType(String type) {
+    authType.value = type;
+  }
+
+  Future<void> emailPasswordSignIn() async {
+    if (!formKey.currentState!.validate()) return;
+
+    formKey.currentState!.save();
+  }
+
+  Future<void> phoneSingIn(context) async {
+    this.context = context;
+
+    if (!formKey.currentState!.validate()) return;
+
+    formKey.currentState!.save();
+
+    String phoneNumber =
+        '${selectedCode.value.dialCode}${phoneEditController.text.trim()}';
+
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+    );
+  }
+
+  Future<void> otpVerify() async {
+    if (!formKey.currentState!.validate()) return;
+
+    formKey.currentState!.save();
+
+    try {
+      AuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId.value,
+        smsCode: otpEditController.text.trim(),
+      );
+      await _handleSignInWithCredential(credential);
+      showSnackBar(context, 'Sign in successful');
+      Get.offAll(const HomeView());
+    } on FirebaseAuthException catch (_) {
+      showSnackBar(context, 'Invalid OTP');
+    } catch (e) {
+      showSnackBar(context, 'Exception $e');
+    }
+  }
+
+  Future<void> verificationCompleted(AuthCredential credential) async {
+    await _handleSignInWithCredential(credential);
+    showSnackBar(context, 'Sign in successful');
+    Get.offAll(const HomeView());
+  }
+
+  Future<void> verificationFailed(exception) async {
+    showSnackBar(Get.context, 'Exception => $exception');
+  }
+
+  Future<void> codeSent(String verifyId, int? forceResendingToken) async {
+    verificationId(verifyId);
+    Get.to(const OTPView());
+  }
+
+  Future<void> codeAutoRetrievalTimeout(String verificationId) async {}
 
   ///Google Sign in method start
   Future<void> googleSignIn(context) async {
@@ -32,7 +115,6 @@ class LoginController extends GetxController {
         Get.offAll(const HomeView());
       }
     } catch (e) {
-      print("Error $e");
       showSnackBar(context, 'Error $e');
     }
   }
@@ -54,7 +136,6 @@ class LoginController extends GetxController {
         showSnackBar(context, 'Something went to wrong try again');
       }
     } catch (e) {
-      print("Error $e");
       showSnackBar(context, 'Error $e');
     }
   }
@@ -82,19 +163,16 @@ class LoginController extends GetxController {
       showSnackBar(context, 'Sign in successful');
       Get.offAll(const HomeView());
     } catch (e) {
-      print("Error $e");
       showSnackBar(context, 'Error $e');
     }
   }
+
   ///Apple sign in method end
 
   Future<void> _handleSignInWithCredential(credential) async {
     UserCredential userCredential =
         await _auth.signInWithCredential(credential);
-    if (userCredential.user != null) {
-      name.value = userCredential.user!.displayName!;
-      email.value = userCredential.user!.email!;
-    }
+    if (userCredential.user != null) {}
   }
 
   void showSnackBar(context, content) {
