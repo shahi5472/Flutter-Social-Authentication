@@ -23,8 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:
-      FirebaseAuth.instance.currentUser == null
+      home: FirebaseAuth.instance.currentUser == null
           ? const LoginView()
           : const HomeView(),
     );

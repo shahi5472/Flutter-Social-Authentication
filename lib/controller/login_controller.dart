@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
 import 'package:flutter_social_authentication/screen/home_view.dart';
 import 'package:flutter_social_authentication/screen/otp_view.dart';
 import 'package:get/get.dart';
@@ -172,6 +173,7 @@ class LoginController extends GetxController {
   Future<void> _handleSignInWithCredential(credential) async {
     UserCredential userCredential =
         await _auth.signInWithCredential(credential);
+    debugPrint('_handleSignInWithCredential ${userCredential.user}');
     if (userCredential.user != null) {}
   }
 
